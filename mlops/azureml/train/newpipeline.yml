@@ -15,7 +15,7 @@ outputs:
   test_data:
     type: uri_folder  # Specify the type for test_data output
   model_info_output_path:
-    type: mlflow_model  # Specify the type for model_info_output_path output
+    type: uri_file  # Specify the type for model_info_output_path output
 
 settings:
   default_datastore: azureml:workspaceblobstore
@@ -24,6 +24,7 @@ settings:
 
 jobs:
   prep_data:
+    type: command
     name: data_preparation  # Provide the job name
     display_name: Data preparation for training  # Provide the display name for the job
     code: ../../../data-science/src
@@ -40,6 +41,7 @@ jobs:
       test_data: ${{parent.outputs.test_data}}
 
   sweep_step:
+    type: sweep
     name: sweep_job
     display_name: sweep-job  # Hint: Provide the display name for the job
     type: sweep
@@ -68,6 +70,7 @@ jobs:
 
 
   register_model:
+    type: command
     name: register_model  # Provide the job name
     display_name: Register Model  # Provide the display name for the job
     code: ../../../data-science/src
